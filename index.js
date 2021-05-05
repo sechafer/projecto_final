@@ -25,17 +25,40 @@ app.get('/items', async (req, res) =>{
   res.json ({ action: item1 })
   })
 
-app.get('/items/:id', async (req, res) =>{
+app.get('/items/:ID_ITEM', async (req, res) =>{
   const item1_ID = req.params.ID_ITEM 
   const item1 = await MENU.findByPk(item1_ID)
   res.json({ item1 })
 })
 
 app.post('/items', async (req, res) =>{
+    var errors=[]
+    if (!req.body.ITEM_NAME){
+        errors.push("Nombre de plato no enviado");
+    }
+    if (!req.body.DESCRIPCION){
+        errors.push("Descripción no enviada");
+    }
+    if (!req.body.TIPO_COMIDA){
+        errors.push("Tipo de comida no enviada");
+    }
+    if (!req.body.PRECIO){
+        errors.push("Precio no enviado");
+    }
+    if (!req.body.PRECIO){
+        errors.push("Foto no Cargada");
+    }
+    if (errors.length){
+        res.status(400).json({"Error":errors.join(",")});
+        return;
+    }
+
+
+
   const body = req.body
   const new_items = await MENU.create({
     ITEM_NAME: body.ITEM_NAME,
-    DESCRIPTION: body.DESCRIPTION,
+    DESCRIPCION: body.DESCRIPCION,
     TIPO_COMIDA: body.TIPO_COMIDA,
     PRECIO:body.PRECIO,
     FOTO_URL:body.FOTO_URL
@@ -50,7 +73,7 @@ app.put('/items/:ID_ITEM', async (req, res) =>{
       const item1 = await MENU.findByPk(item1_ID)
       items1.update({
           ITEM_NAME: body.ITEM_NAME,
-          DESCRIPTION: body.DESCRIPTION,
+          DESCRIPCION: body.DESCRIPCION,
           TIPO_COMIDA: body.TIPO_COMIDA,
           PRECIO:body.PRECIO,
           FOTO_URL:body.FOTO_URL
