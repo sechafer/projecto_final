@@ -45,7 +45,7 @@ app.post('/items', async (req, res) =>{
     if (!req.body.PRECIO){
         errors.push("Precio no enviado");
     }
-    if (!req.body.PRECIO){
+    if (!req.body.FOTO_URL){
         errors.push("Foto no Cargada");
     }
     if (errors.length){
