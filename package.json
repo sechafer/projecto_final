@@ -4,6 +4,7 @@
   "description": "parte de servidor node  proyecto final",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "samuel chacon & Jennifer Gonzalez",
@@ -18,5 +19,14 @@
   "bugs": {
     "url": "https://github.com/sechafer/projecto_final/issues"
   },
-  "homepage": "https://github.com/sechafer/projecto_final#readme"
+  "homepage": "https://github.com/sechafer/projecto_final#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "sequelize": "^6.6.2",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "sequelize-cli": "^6.2.0"
+  }
 }
