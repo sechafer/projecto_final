@@ -1,0 +1,22 @@
+{
+  "name": "proyecto_final_nodejs",
+  "version": "1.0.0",
+  "description": "parte de servidor node  proyecto final",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "samuel chacon & Jennifer Gonzalez",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sechafer/projecto_final.git"
+  },
+  "keywords": [
+    "projecto"
+  ],
+  "bugs": {
+    "url": "https://github.com/sechafer/projecto_final/issues"
+  },
+  "homepage": "https://github.com/sechafer/projecto_final#readme"
+}
