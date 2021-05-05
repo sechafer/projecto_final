@@ -62,6 +62,7 @@ app.put('/items/:ID_ITEM', async (req, res) =>{
 })
 
 
+
 app.delete('/items/:ID_ITEM', async (req, res) => {
   try{
       const ID = req.params.ID_ITEM
@@ -72,6 +73,6 @@ app.delete('/items/:ID_ITEM', async (req, res) => {
   }
 })
 
-app.listen(8080, () => {
+app.listen(5000, () => {
   console.log('Listening port number 5000')
 })
