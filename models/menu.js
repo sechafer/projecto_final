@@ -1,7 +1,8 @@
 'use strict'
 const {
   Model
-} = require('sequelize')
+} = require('sequelize');
+//const { combineTableNames } = require('sequelize/types/lib/utils');
 module.exports = (sequelize, DataTypes) => {
   class MENU extends Model {
     /**
@@ -21,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     FOTO_URL:DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'MENU'
+    modelName: 'MENU',
+    tableName: 'MENU'
   })
   return MENU
 };

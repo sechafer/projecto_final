@@ -8,8 +8,8 @@ const sequelize = new Sequelize ({
     storage:'./db.db'
 });
 
-const Item = require ('./models/menu')
-const items = Item ( sequelize, DataTypes)
+const MENU = require ('./models/menu')
+const items = MENU ( sequelize, DataTypes)
 // We need to parse JSON coming from requests
 
 app.use(express.json())
@@ -21,14 +21,27 @@ app.get('', (req, res) =>{
 })
 
 app.get('/items', async (req, res) =>{    
-  const item1 = await MENU.findAll()
-  res.json ({ action: item1 })
+  const item1 = await items.findAll()
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Request-Width, Content-Type, Accept");
+  res.json ({ "": item1 })
+  
   })
 
-app.get('/items/:ID_ITEM', async (req, res) =>{
-  const item1_ID = req.params.ID_ITEM 
-  const item1 = await MENU.findByPk(item1_ID)
+app.get('/items/:id', async (req, res) =>{
+  const item1_ID = req.params.id 
+  const item1 = await items.findByPk(item1_ID)
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Request-Width, Content-Type, Accept");
+  
   res.json({ item1 })
+  var errors=[]
+  
+ 
+  if (errors.length){
+    res.status(304).json({"Error 304":errors.join(",")});
+    return;
+}
 })
 
 app.post('/items', async (req, res) =>{
@@ -49,14 +62,14 @@ app.post('/items', async (req, res) =>{
         errors.push("Foto no Cargada");
     }
     if (errors.length){
-        res.status(400).json({"Error":errors.join(",")});
+        res.status(400).json({"Error 400":errors.join(",")});
         return;
     }
 
 
 
   const body = req.body
-  const new_items = await MENU.create({
+  const new_items = await items.create({
     ITEM_NAME: body.ITEM_NAME,
     DESCRIPCION: body.DESCRIPCION,
     TIPO_COMIDA: body.TIPO_COMIDA,
@@ -66,11 +79,12 @@ app.post('/items', async (req, res) =>{
   res.json({ new_items })
 })
 
-app.put('/items/:ID_ITEM', async (req, res) =>{
+app.put('/items/:id', async (req, res) =>{
   try{
-      const item1_ID = req.params.ID_ITEM
+    
+      const item1_ID = req.params.id
       const body = req.body
-      const item1 = await MENU.findByPk(item1_ID)
+      const item1 = await items.findByPk(item1_ID)
       items1.update({
           ITEM_NAME: body.ITEM_NAME,
           DESCRIPCION: body.DESCRIPCION,
@@ -86,10 +100,10 @@ app.put('/items/:ID_ITEM', async (req, res) =>{
 
 
 
-app.delete('/items/:ID_ITEM', async (req, res) => {
+app.delete('/items/:id', async (req, res) => {
   try{
-      const ID = req.params.ID_ITEM
-      const delete_item = await menu.destroy({ where: { ID: ID } })
+      const ID = req.params.id
+      const delete_item = await items.destroy({ where: { ID: ID } })
       res.send({ action: 'Delete item', delete_item: delete_item })
   } catch (error) {
       return res.send( `<h1>Error Delete </h1><br><h2> Server error detele item:</h2><br><h2>${error}</h2>`)
