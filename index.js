@@ -7,6 +7,14 @@ const sequelize = new Sequelize ({
     dialect: 'sqlite',
     storage:'./db.db'
 });
+const cors = require('cors');
+
+var corsOptions = {
+  origin: 'http://localhost',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors())
 
 const MENU = require ('./models/menu')
 const items = MENU ( sequelize, DataTypes)
@@ -16,25 +24,31 @@ app.use(express.json())
 
 
 
-app.get('', (req, res) =>{
+app.get('', (req, res, next) =>{
   res.send ('<h1>Home items</h1>')
 })
 
-app.get('/items', async (req, res) =>{    
-  const item1 = await items.findAll()
+app.get('/items', async (req, res, next) =>{    
+  var item1 = await items.findAll()
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Request-Width, Content-Type, Accept");
-  res.json ({ "": item1 })
+  app.use(cors());
+  res.json ({ "items": item1 });
+  
   
   })
 
-app.get('/items/:id', async (req, res) =>{
+app.get('/items/:id', cors(), async (req, res) =>{
   const item1_ID = req.params.id 
   const item1 = await items.findByPk(item1_ID)
-  res.header("Access-Control-Allow-Origin", "*");
+  /* res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Request-Width, Content-Type, Accept");
-  
-  res.json({ item1 })
+   */
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization");
+    app.use(cors());  
+    res.json({ item1 })
   var errors=[]
   
  
@@ -44,7 +58,7 @@ app.get('/items/:id', async (req, res) =>{
 }
 })
 
-app.post('/items', async (req, res) =>{
+app.post('/items', cors(), async (req, res) =>{
     var errors=[]
     if (!req.body.ITEM_NAME){
         errors.push("Nombre de plato no enviado");
@@ -65,10 +79,11 @@ app.post('/items', async (req, res) =>{
         res.status(400).json({"Error 400":errors.join(",")});
         return;
     }
-
-
-
-  const body = req.body
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization");
+    
+    const body = req.body
   const new_items = await items.create({
     ITEM_NAME: body.ITEM_NAME,
     DESCRIPCION: body.DESCRIPCION,
@@ -79,11 +94,13 @@ app.post('/items', async (req, res) =>{
   res.json({ new_items })
 })
 
-app.put('/items/:id', async (req, res) =>{
+app.put('/items/:id', cors(),  async (req, res) =>{
   try{
-    
-      const item1_ID = req.params.id
-      const body = req.body
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization");   const item1_ID = req.params.id
+   
+    const body = req.body
       const item1 = await items.findByPk(item1_ID)
       items1.update({
           ITEM_NAME: body.ITEM_NAME,
@@ -100,9 +117,13 @@ app.put('/items/:id', async (req, res) =>{
 
 
 
-app.delete('/items/:id', async (req, res) => {
+app.delete('/items/:id', cors(),  async (req, res) => {
   try{
-      const ID = req.params.id
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization");   const item1_ID = req.params.id
+   
+    const ID = req.params.id
       const delete_item = await items.destroy({ where: { ID: ID } })
       res.send({ action: 'Delete item', delete_item: delete_item })
   } catch (error) {
