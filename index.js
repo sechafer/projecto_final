@@ -102,7 +102,7 @@ app.put('/items/:id', cors(),  async (req, res) =>{
    
     const body = req.body
       const item1 = await items.findByPk(item1_ID)
-      items1.update({
+      item1.update({
           ITEM_NAME: body.ITEM_NAME,
           DESCRIPCION: body.DESCRIPCION,
           TIPO_COMIDA: body.TIPO_COMIDA,
